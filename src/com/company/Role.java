@@ -1,31 +1,35 @@
 package com.company;
 
-public class Role {
-    private int id_role;
-    private String profession;
-    private  int average_salary;
+import java.util.List;
 
-    public Role(String profession, int average_salary) {
+public class Role {
+    private int idRole;
+    private String profession;
+    private  int averageSalary;
+
+    private List<User> users;
+
+    public Role(String profession, int averageSalary) {
         this.profession = profession;
-        this.average_salary = average_salary;
+        this.averageSalary = averageSalary;
     }
 
-    public Role(int id_role) {
-        this.id_role = id_role;
+    public Role(int idRole) {
+        this.idRole = idRole;
     }
 
     public Role() {
-        this.id_role = id_role;
+        this.idRole = idRole;
         this.profession = profession;
-        this.average_salary = average_salary;
+        this.averageSalary = averageSalary;
     }
 
-    public int getId_role() {
-        return id_role;
+    public int getIdRole() {
+        return idRole;
     }
 
-    public void setId_role(int id_role) {
-        this.id_role = id_role;
+    public void setIdRole(int idRole) {
+        this.idRole = idRole;
     }
 
     public String getProfession() {
@@ -35,17 +39,21 @@ public class Role {
     public void setProfession(String profession) {
         this.profession = profession;
     }
-    public int getAverage_salary() {
-        return average_salary;
+    public int getAverageSalary() {
+        return averageSalary;
     }
 
-    public void setAverage_salary(int average_salary) {
-        this.average_salary = average_salary;
+    public void setAverageSalary(int averageSalary) {
+        this.averageSalary = averageSalary;
     }
+
+    public List<User> getUsers() { return users; }
+
+    public void setUsers(List<User> users) { this.users = users; }
 
     @Override
     public String toString() {
         return "Role (profession = " + this.profession +
-                ", average salary = " + this.average_salary + ")" + "\n";
+                ", average salary = " + this.averageSalary + ")" + "\n";
     }
 }

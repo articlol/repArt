@@ -28,37 +28,29 @@ public class UserDAO {
                 user.setEmail(resultSet.getString("email"));
                 list.add(user);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-
-
-    public User selectUser (int id_user){
+    public User selectUser (int idUser){
         try(Connection connection = connectorDB.openConnection();
             PreparedStatement prst = connection.prepareStatement(
-                    "select name, age, email from users where id_users = ?");)
-        {
-            prst.setInt(1, id_user);
+                    "select name, age, email from users where id_users = ?");) {
+            prst.setInt(1, idUser);
             ResultSet resultSet = prst.executeQuery();
-            resultSet.next();
-            String name = resultSet.getString("name");
-            int age = resultSet.getInt("age");
-            String email = resultSet.getString("email");
-            User user = new User();
-            user.setName(name);
-            user.setAge(age);
-            user.setEmail(email);
-            return user;
-
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }catch (ClassNotFoundException e){
+            if(resultSet.next()) {
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+                String email = resultSet.getString("email");
+                User user = new User();
+                user.setName(name);
+                user.setAge(age);
+                user.setEmail(email);
+                return user;
+            }
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
         return null;
@@ -66,43 +58,51 @@ public class UserDAO {
     public User updateUser(User user){
         try (Connection connection = connectorDB.openConnection();
              PreparedStatement prst = connection.prepareStatement(
-                     "update users set name = ?, age = ?, email = ? "))
-        {
+                     "update users set name = ?, age = ?, email = ? ")) {
             prst.setString(1, user.getName());
             prst.setInt(2, user.getAge());
             prst.setString(3, user.getEmail());
             prst.executeUpdate();
             return user;
-        }catch (SQLException e){
-            e.printStackTrace();
-        }catch (ClassNotFoundException e){
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
         return null;
     }
-    public void insertUser(User user){
+    public User insertUser(User user){
         try(Connection connection = connectorDB.openConnection();
-            PreparedStatement prst = connection.prepareStatement("insert into users(name, age, email) values(?, ?, ?)"))
-        {
+            PreparedStatement prst = connection.prepareStatement(
+                    "insert into users(name, age, email) values(?, ?, ?)")) {
             prst.setString(1, user.getName());
             prst.setInt(2, user.getAge());
             prst.setString(3, user.getEmail());
             prst.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }catch (ClassNotFoundException e){
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
+        return user;
     }
     public void deleteUser(User user) {
         try(Connection connection = connectorDB.openConnection();
-        PreparedStatement prst = connection.prepareStatement("delete from users where id_users = ?"))
-        {
-            prst.setInt(1, user.getId_users());
+        PreparedStatement prst = connection.prepareStatement(
+                "delete from users where id_users = ?")) {
+            prst.setInt(1, user.getIdUser());
             prst.executeUpdate();
-        }catch (SQLException e){
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
-        }catch (ClassNotFoundException e){
+        }
+    }
+    public void addUserRole (String name, String profession){
+        try(Connection connection = connectorDB.openConnection();
+            PreparedStatement prst = connection.prepareStatement(
+                    "insert into users_role (id_pivot_users, id_pivot_role)" +
+                            "select users.id_users, role.id_role" +
+                            "from users, role" +
+                            "where users.name = ? and role.profession = ?")){
+            prst.setString(1, name);
+            prst.setString(2, profession);
+
+        }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
     }

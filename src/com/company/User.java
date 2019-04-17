@@ -1,13 +1,17 @@
 package com.company;
 
+import java.util.List;
+
 public class User {
-    private int id_user;
+    private int idUser;
     private String name;
     private int age;
     private String email;
 
-    public User(int id_user) {
-        this.id_user = id_user;
+    private List<Role> roles;
+
+    public User(int idUser) {
+        this.idUser = idUser;
     }
 
     public User() {
@@ -22,12 +26,12 @@ public class User {
         this.email = email;
     }
 
-    public int getId_users() {
-        return id_user;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setId_users(int id_users) {
-        this.id_user = id_users;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getName() {
@@ -53,6 +57,10 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public List<Role> getRoles() { return roles; }
+
+    public void setRoles(List<Role> roles) { this.roles = roles; }
 
     @Override
     public String toString() {
