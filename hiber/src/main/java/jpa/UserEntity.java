@@ -1,37 +1,40 @@
-package com.company;
+package jpa;
 
+
+import javax.management.relation.Role;
+import javax.persistence.*;
 import java.util.List;
 
-public class User {
+@Entity
+@Table(name = "users")
+public class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_users")
     private int idUser;
     private String name;
     private int age;
     private String email;
 
-    private List<Role> roles;
+    @ManyToMany
+    @JoinTable(name = "users",
+            joinColumns = @JoinColumn(name = "id_users"),
+            inverseJoinColumns = @JoinColumn(name = "id_role"))
+    private List<RoleEntity> roles;
 
-    public User(int idUser) {
-        this.idUser = idUser;
+    public UserEntity() {
     }
 
-    public User() {
+    public UserEntity(String name, int age, String email, List<RoleEntity> roles) {
         this.name = name;
         this.age = age;
         this.email = email;
-    }
-
-    public User(String name, int age, String email) {
-        this.name = name;
-        this.age = age;
-        this.email = email;
+        this.roles = roles;
     }
 
     public int getIdUser() {
         return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
     }
 
     public String getName() {
@@ -58,9 +61,13 @@ public class User {
         this.email = email;
     }
 
-    public List<Role> getRoles() { return roles; }
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
 
-    public void setRoles(List<Role> roles) { this.roles = roles; }
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public String toString() {

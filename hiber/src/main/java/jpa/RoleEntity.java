@@ -1,35 +1,37 @@
-package com.company;
+package jpa;
 
+
+import javax.persistence.*;
 import java.util.List;
 
-public class Role {
+@Entity
+@Table(name = "role")
+public class RoleEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_role")
     private int idRole;
     private String profession;
-    private  int averageSalary;
 
-    private List<User> users;
+    @Column(name = "average_salary")
+    private int averageSalary;
+    @ManyToMany
+    @JoinTable(name = "role",
+            joinColumns = @JoinColumn(name = "id_role"),
+            inverseJoinColumns = @JoinColumn(name = "id_users"))
+    private List<UserEntity> users;
 
-    public Role(String profession, int averageSalary) {
-        this.profession = profession;
-        this.averageSalary = averageSalary;
+    public RoleEntity() {
     }
 
-    public Role(int idRole) {
-        this.idRole = idRole;
-    }
-
-    public Role() {
-        this.idRole = idRole;
+    public RoleEntity(String profession, int averageSalary, List<UserEntity> users) {
         this.profession = profession;
         this.averageSalary = averageSalary;
+        this.users = users;
     }
 
     public int getIdRole() {
         return idRole;
-    }
-
-    public void setIdRole(int idRole) {
-        this.idRole = idRole;
     }
 
     public String getProfession() {
@@ -39,6 +41,7 @@ public class Role {
     public void setProfession(String profession) {
         this.profession = profession;
     }
+
     public int getAverageSalary() {
         return averageSalary;
     }
@@ -47,9 +50,13 @@ public class Role {
         this.averageSalary = averageSalary;
     }
 
-    public List<User> getUsers() { return users; }
+    public List<UserEntity> getUsers() {
+        return users;
+    }
 
-    public void setUsers(List<User> users) { this.users = users; }
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
 
     @Override
     public String toString() {
